@@ -14,7 +14,6 @@
 
 require File.expand_path('../../spec_helper', __FILE__)
 
-
 describe OpenProject::Webhooks do
   describe '.register_hook' do
     after do
@@ -39,7 +38,7 @@ describe OpenProject::Webhooks do
   end
 
   describe '.unregister_hook' do
-    let(:probe) { lambda{} }
+    let(:probe) { lambda {} }
 
     before do
       OpenProject::Webhooks.register_hook('testhook2', &probe)
