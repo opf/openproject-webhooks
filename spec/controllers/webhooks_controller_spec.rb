@@ -14,7 +14,6 @@
 
 require File.expand_path('../../spec_helper', __FILE__)
 
-
 describe WebhooksController, type: :controller do
   let(:hook) { double(OpenProject::Webhooks::Hook) }
   let(:user) { double(User).as_null_object }
@@ -39,7 +38,7 @@ describe WebhooksController, type: :controller do
     end
 
     it 'should call the hook with a user' do
-      expect(hook).to receive(:handle).with { |env, params, user|
+      expect(hook).to receive(:handle).with { |_env, _params, user|
         expect(user).to equal(user)
       }
 
