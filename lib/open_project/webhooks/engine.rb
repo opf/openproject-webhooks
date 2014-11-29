@@ -21,8 +21,8 @@ module OpenProject::Webhooks
     include OpenProject::Plugins::ActsAsOpEngine
 
     register 'openproject-webhooks',
-             :author_url => 'http://finn.de',
-             :requires_openproject => '>= 3.0.0pre43'
+             author_url: 'http://finn.de',
+             requires_openproject: '>= 3.0.0pre43'
 
     config.before_configuration do |app|
       # This is required for the routes to be loaded first as the routes should
