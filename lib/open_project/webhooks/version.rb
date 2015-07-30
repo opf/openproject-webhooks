@@ -14,6 +14,6 @@
 
 module OpenProject
   module Webhooks
-    VERSION = "4.1.3"
+    VERSION = "4.1.4"
   end
 end
