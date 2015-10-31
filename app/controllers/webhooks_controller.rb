@@ -24,7 +24,7 @@ class WebhooksController < ApplicationController
     # in any part of the response except the HTTP status code.
     # Also handling requests with a application/json Content-Type as API requests
     # should be safe regarding CSRF as browsers don't send forms as JSON.
-    super || request.content_type == "application/json"
+    super || request.content_type == 'application/json'
   end
 
   def handle_hook

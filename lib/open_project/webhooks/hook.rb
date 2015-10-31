@@ -26,9 +26,8 @@ module OpenProject::Webhooks
       "webhooks/#{name}"
     end
 
-    def handle(environment = Hash.new, params = Hash.new, user = nil)
+    def handle(environment = {}, params = {}, user = nil)
       callback.call self, environment, params, user
     end
-
   end
 end

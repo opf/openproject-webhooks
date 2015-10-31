@@ -14,8 +14,8 @@
 
 module OpenProject
   module Webhooks
-    require "open_project/webhooks/engine"
-    require "open_project/webhooks/hook"
+    require 'open_project/webhooks/engine'
+    require 'open_project/webhooks/hook'
 
     @@registered_hooks = []
 
@@ -34,8 +34,8 @@ module OpenProject
     #
     # Returns the newly created hook
     def self.register_hook(name, &callback)
-      raise "A hook named '#{name}' is already registered!" if find(name)
-      Rails.logger.warn "hook registered"
+      fail "A hook named '#{name}' is already registered!" if find(name)
+      Rails.logger.warn 'hook registered'
       hook = Hook.new(name, &callback)
       @@registered_hooks << hook
       hook
@@ -45,12 +45,12 @@ module OpenProject
     # be redrawn in a running instance
     def self.unregister_hook(name)
       hook = find(name)
-      raise "A hook named '#{name}' was not registered!" unless find(name)
+      fail "A hook named '#{name}' was not registered!" unless find(name)
       @@registered_hooks.delete hook
     end
 
     def self.find(name)
-      @@registered_hooks.find {|h| h.name == name}
+      @@registered_hooks.find { |h| h.name == name }
     end
   end
 end
