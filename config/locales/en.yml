@@ -15,6 +15,8 @@ en:
       no_results_table: No webhooks have been defined yet.
       label_add_new: Add new webhook
       label_edit: Edit webhook
+      deliveries:
+        title: 'Webhook deliveries status'
       form:
         introduction: >
           Send a POST request to the payload URL below for any event in the project your subscribe.
