@@ -1,3 +1,5 @@
+require 'rest-client'
+
 #-- encoding: UTF-8
 #-- copyright
 # OpenProject is a project management system.
@@ -35,7 +37,7 @@ class WorkPackageWebhookJob < WebhookJob
   def initialize(webhook_id, journal_id, action)
     @webhook_id = webhook_id
     @journal_id = journal_id
-    @action = @action
+    @action = action
   end
 
   def perform
@@ -55,13 +57,14 @@ class WorkPackageWebhookJob < WebhookJob
 
     raise e
   ensure
-    WebhookLog.create(
+    Webhooks::Log.create(
       webhook: webhook,
-      event: webhook.event,
+      event: webhook.events.where(name: "WorkPackage").first!,
       action: action,
       url: webhook.url,
       response_code: response.code,
       response_body: response.to_s
+    )
   end
 
   def request_signature(request_body)
@@ -89,6 +92,6 @@ class WorkPackageWebhookJob < WebhookJob
   end
 
   def webhook
-    @journal ||= Webhooks::OutgoingWebhook.find(webhook_id)
+    @webook ||= Webhooks::Webhook.find(webhook_id)
   end
 end
