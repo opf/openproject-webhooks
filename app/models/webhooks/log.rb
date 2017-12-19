@@ -5,6 +5,6 @@ module Webhooks
 
     validates :action, presence: true
     validates :url, presence: true
-    validates :response_cdoe, presence: true
+    validates :response_code, presence: true
   end
 end

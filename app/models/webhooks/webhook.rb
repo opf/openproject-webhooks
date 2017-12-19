@@ -8,9 +8,9 @@ module Webhooks
     validates_uniqueness_of :name
     validates :url, url: true
 
-    has_many :events, foreign_key: :webhooks_webhook_id, class_name: 'Webhooks::Event', dependent: :destroy
-    has_many :webhook_projects, foreign_key: :webhooks_webhook_id
-    has_many :projects, through: :webhook_projects, dependent: :destroy
+    has_many :events, foreign_key: :webhooks_webhook_id, class_name: '::Webhooks::Event', dependent: :destroy
+    has_many :webhook_projects, foreign_key: :webhooks_webhook_id, class_name: '::Webhooks::Project', dependent: :destroy
+    has_many :projects, through: :webhook_projects
 
     after_initialize :set_all_projects
 
