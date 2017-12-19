@@ -6,6 +6,10 @@ en:
         secret: 'Signature secret'
         events: 'Events'
         projects: 'Enabled projects'
+      webhooks/log:
+        action: 'Action'
+        url: 'Payload URL'
+        response_code: 'Response code'
     models:
       webhooks/outgoing_webhook: "Outgoing webhook"
   webhooks:
@@ -16,7 +20,9 @@ en:
       label_add_new: Add new webhook
       label_edit: Edit webhook
       deliveries:
-        title: 'Webhook deliveries status'
+        no_results_table: No deliveries have been made for this webhook.
+        title: 'Recent deliveries'
+        time: 'Delivery time'
       form:
         introduction: >
           Send a POST request to the payload URL below for any event in the project your subscribe.

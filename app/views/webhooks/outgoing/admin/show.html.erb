@@ -17,7 +17,17 @@
       <span class="button--text"><%= t(:label_edit) %></span>
     <% end %>
   </li>
+  <li class="toolbar-item">
+    <%= link_to admin_outgoing_webhook_path(@webhook),
+                class: 'button -danger',
+                data: { method: 'delete', confirm: I18n.t(:text_are_you_sure) } do %>
+      <%= op_icon('button--icon icon-delete') %>
+      <span class="button--text"><%= t(:button_delete) %></span>
+    <% end %>
+  </li>
 <% end %>
 
 
-<h2></h2>
+<h2><%= t 'webhooks.outgoing.deliveries.title' %></h2>
+
+<%= cell ::Webhooks::Outgoing::Deliveries::TableCell, @webhook.deliveries.newest %>

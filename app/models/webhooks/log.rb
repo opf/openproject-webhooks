@@ -6,5 +6,9 @@ module Webhooks
     validates :action, presence: true
     validates :url, presence: true
     validates :response_code, presence: true
+
+    def self.newest(limit: 10)
+      order(updated_at: :desc).limit(limit)
+    end
   end
 end
