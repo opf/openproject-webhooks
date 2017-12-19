@@ -7,8 +7,13 @@ module ::Webhooks
         model
       end
 
+      def name
+        link_to webhook.name,
+                { controller: table.target_controller, action: :show, webhook_id: webhook.id }
+      end
+
       def enabled
-        if model.enabled
+        if webhook.enabled
           op_icon 'icon-yes'
         else
           op_icon 'icon-no'
@@ -16,7 +21,7 @@ module ::Webhooks
       end
 
       def events
-        selected_events = model.events
+        selected_events = webhook.events
         count = selected_events.count
 
         if count <= 3
@@ -27,12 +32,12 @@ module ::Webhooks
       end
 
       def selected_projects
-        selected = model.project_ids.count
+        selected = webhook.project_ids.count
 
         if selected.zero?
          "(#{I18n.t(:label_all)})"
         elsif selected <= 3
-          model.projects.pluck(:name).join(', ')
+          webhook.projects.pluck(:name).join(', ')
         else
           content_tag('span', selected, class: 'badge -border-only')
         end
