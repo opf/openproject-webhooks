@@ -17,12 +17,33 @@ module Webhooks
         @webhook = webhook_class.new
       end
 
+      def create
+        service = ::Webhooks::Outgoing::UpdateWebhookService.new(webhook_class.new, current_user: current_user)
+        action = service.call(attributes: permitted_webhooks_params)
+        if action.success?
+          flash[:notice] = I18n.t(:notice_successful_create)
+          redirect_to action: :index
+        else
+          @webhook = action.result
+          render action: :new
+        end
+      end
+
       def update
+        service = ::Webhooks::Outgoing::UpdateWebhookService.new(@webhook, current_user: current_user)
+        action = service.call(attributes: permitted_webhooks_params)
+        if action.success?
+          flash[:notice] = I18n.t(:notice_successful_update)
+          redirect_to action: :index
+        else
+          @webhook = action.result
+          render action: :edit
+        end
       end
 
       def destroy
         if @webhook.destroy
-          flash[:notice] = I18n.t(:successful_delete)
+          flash[:notice] = I18n.t(:notice_successful_delete)
         else
           flash[:error] = I18n.t(:error_failed_to_delete_entry)
         end
@@ -39,13 +60,15 @@ module Webhooks
       end
 
       def webhook_class
-        ::Webhooks::OutgoingWebhook
+        ::Webhooks::Webhook
       end
 
-      def webhooks_params
+      def permitted_webhooks_params
         params
           .require(:webhook)
-          .permit(:name, :status, :description, :url, :projects, :types, :secret, :events)
+          .permit(:name, :status, :description, :url, :secret,
+                  :project_ids, selected_project_ids: [], events: [])
+
       end
 
       def show_local_breadcrumb

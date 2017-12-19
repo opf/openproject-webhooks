@@ -39,5 +39,9 @@ module OpenProject::Webhooks
         end
       end
     end
+
+    initializer 'webhooks.precompile_assets' do |app|
+      app.config.assets.precompile += %w(webhooks/webhooks.css webhooks/webhooks.js)
+    end
   end
 end
