@@ -11,12 +11,12 @@ class AddWebhooks < ActiveRecord::Migration[5.0]
       t.timestamps
     end
 
-    create_table :webhooks_webhook_events do |t|
+    create_table :webhooks_events do |t|
       t.string :name
       t.references :webhooks_webhook, index: true, foreign_key: true
     end
 
-    create_table :webhooks_webhook_projects do |t|
+    create_table :webhooks_projects do |t|
       t.references :project, index: true, foreign_key: true
       t.references :webhooks_webhook, index: true, foreign_key: true
     end

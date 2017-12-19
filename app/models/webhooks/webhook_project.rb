@@ -1,5 +1,5 @@
 module Webhooks
-  class WebhookProject < ActiveRecord::Base
+  class Project < ActiveRecord::Base
     belongs_to :webhook
     belongs_to :project
 
