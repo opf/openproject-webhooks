@@ -1,0 +1,54 @@
+<fieldset class="form--fieldset">
+  <div class="form--field">
+    <%= f.text_field :name, required: true, container_class: '-middle' %>
+  </div>
+
+  <div class="form--field">
+    <%= f.text_area :description, container_class: '-wide' %>
+  </div>
+
+  <div class="form--field">
+    <%= f.text_field :secret, container_class: '-wide' %>
+    <div class="form--field-instructions">
+      <%= t('webhooks.outgoing.form.secret.description') %>
+    </div>
+  </div>
+
+  <% { update: 'Update work package', create: 'Create work package' }.each do |name, text| %>
+    <div class="form--field">
+        <%= f.collection_check_box :events,
+                                  name,
+                                  false,
+                                  text -%>
+    </div>
+  <% end %>
+</fieldset>
+
+<fieldset class="form--fieldset">
+  <legend class="form--fieldset-legend" title="<%= 'webhooks.outgoing.form.project_ids.title' %>">
+    <%= t 'webhooks.outgoing.form.project_ids.title' %>
+  </legend>
+  <p><%= t('webhooks.outgoing.form.project_ids.description') %></p>
+  <div class="form--field">
+      <%= f.radio_button :project_ids, 'all', label: t('webhooks.outgoing.form.project_ids.all'), container_class: '-wide' %>
+  </div>
+  <div class="form--field">
+      <%= f.radio_button :project_ids, 'selection', label: t('webhooks.outgoing.form.project_ids.selected'), container_class: '-wide' %>
+  </div>
+</fieldset>
+
+<fieldset class="form--fieldset">
+    <legend class="form--fieldset-legend" title="<%= 'webhooks.outgoing.form.type_ids.title' %>">
+      <%= t 'webhooks.outgoing.form.type_ids.title' %>
+    </legend>
+    <p><%= t('webhooks.outgoing.form.type_ids.description') %></p>
+    <div class="form--field">
+        <%= f.radio_button :type_ids, 'all', label: t('webhooks.outgoing.form.type_ids.all'), container_class: '-wide' %>
+    </div>
+    <div class="form--field">
+        <%= f.radio_button :type_ids, 'selection', label: t('webhooks.outgoing.form.type_ids.selected'), container_class: '-wide' %>
+    </div>
+  </fieldset>
+
+
+

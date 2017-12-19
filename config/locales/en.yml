@@ -1,0 +1,26 @@
+en:
+  activerecord:
+    attributes:
+      webhooks/outgoing_webhook:
+        secret: 'Signature secret'
+        default: 'Use as default'
+        events: 'Events'
+        type_ids: 'Enabled work package types'
+        project_ids: 'Enabled projects'
+    models:
+      webhooks/outgoing_webhook: "Outgoing webhook"
+  webhooks:
+    singular: Webhook
+    plural: Webhooks
+    outgoing:
+      no_results_table: No webhooks have been defined yet.
+      label_add_new: Add new webhook
+      form:
+        project_ids:
+          title: 'Enabled projects'
+          description: 'Select for which projects this webhook should be executed for.'
+          all: 'All projects'
+          selected: 'Selected projects only'
+        secret:
+          description: >
+            If set, this secret value is used by OpenProject to sign the webhook payload.
