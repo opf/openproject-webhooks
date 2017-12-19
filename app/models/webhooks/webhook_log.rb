@@ -1,7 +1,7 @@
 module Webhooks
-  class WebhookLog < ActiveRecord::Base
-    belongs_to :webhook
-    belongs_to :event
+  class Log < ActiveRecord::Base
+    belongs_to :webhooks_webhook
+    belongs_to :webhooks_event
 
     validates :action, presence: true
     validates :url, presence: true
