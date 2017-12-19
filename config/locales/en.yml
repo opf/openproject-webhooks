@@ -19,6 +19,15 @@ en:
       no_results_table: No webhooks have been defined yet.
       label_add_new: Add new webhook
       label_edit: Edit webhook
+      label_event_resources: Event resources
+      events:
+        created: "Created"
+        updated: "Updated"
+      status:
+        enabled: 'Webhook is enabled'
+        disabled: 'Webhook is disabled'
+        enabled_text: 'The webhook will emit payloads for the defined events below.'
+        disabled_text: 'Click the edit button to activate the webhook.'
       deliveries:
         no_results_table: No deliveries have been made for this webhook.
         title: 'Recent deliveries'
@@ -28,6 +37,11 @@ en:
           Send a POST request to the payload URL below for any event in the project your subscribe.
           Payload will correspond to the APIv3 representation of the object being modified.
         apiv3_doc_url: For more information, visit the API documentation
+        description:
+          placeholder: 'Optional description for the webhook.'
+        enabled:
+          description: >
+            When checked, the webhook will trigger on the selected events. Uncheck to disable the webhook.
         events:
           title: 'Enabled events'
         project_ids:

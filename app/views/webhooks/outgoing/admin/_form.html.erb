@@ -14,14 +14,20 @@
   </div>
 
   <div class="form--field">
-    <%= f.text_area :description, container_class: '-wide' %>
+    <%= f.text_area :description, placeholder: t('webhooks.outgoing.form.description.placeholder'), container_class: '-wide' %>
   </div>
-
 
   <div class="form--field">
     <%= f.text_field :secret, container_class: '-wide' %>
     <div class="form--field-instructions">
       <%= t('webhooks.outgoing.form.secret.description') %>
+    </div>
+  </div>
+
+  <div class="form--field">
+    <%= f.check_box :enabled %>
+    <div class="form--field-instructions">
+      <%= t('webhooks.outgoing.form.enabled.description') %>
     </div>
   </div>
 </fieldset>
@@ -37,12 +43,19 @@
   </div>
 
   <% event_names = @webhook.event_names %>
-  <% { update: 'Update work package', create: 'Create work package' }.each do |name, text| %>
+  <% OpenProject::Webhooks::EventResources.available_events_map.each do |resource_label, events|  %>
     <div class="form--field">
-        <%= f.collection_check_box :events,
-                                   name,
-                                   event_names.include?(name.to_s),
-                                   text -%>
+      <label class="form--label"><%= resource_label %></label>
+      <div class="form--field-container -vertical">
+        <% events.each do |key, label| %>
+          <label class="form--label-with-check-box">
+            <%= styled_check_box_tag 'webhook[events][]',
+                              key,
+                              event_names.include?(key) -%>
+            <%= label %>
+          </label>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </fieldset>

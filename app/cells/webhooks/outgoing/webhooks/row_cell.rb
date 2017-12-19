@@ -14,22 +14,30 @@ module ::Webhooks
         end
 
         def enabled
-          if webhook.enabled
+          if webhook.enabled?
             op_icon 'icon-yes'
-          else
-            op_icon 'icon-no'
           end
         end
 
         def events
-          selected_events = webhook.events
-          count = selected_events.count
+          selected_events =
+            webhook
+              .events
+              .pluck(:name)
+              .map(&method(:lookup_event_name))
+              .compact
+              .uniq
 
+          count = selected_events.count
           if count <= 3
-            selected_events.pluck(:name).join(', ')
+            selected_events.join(', ')
           else
             content_tag('span', count, class: 'badge -border-only')
           end
+        end
+
+        def lookup_event_name(name)
+          OpenProject::Webhooks::EventResources.lookup_resource_name(name)
         end
 
         def selected_projects

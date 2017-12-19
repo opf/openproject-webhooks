@@ -21,8 +21,14 @@ module OpenProject::Webhooks
     include OpenProject::Plugins::ActsAsOpEngine
 
     register 'openproject-webhooks',
-             :author_url => 'http://finn.de',
-             :requires_openproject => '>= 3.0.0pre43'
+             author_url: 'https://github.com/opf/openproject-webhooks' do
+        menu :admin_menu,
+             :plugin_webhooks,
+             { controller: 'webhooks/outgoing/admin', action: :index },
+             parent: :plugins,
+             caption: ->(*) { I18n.t('webhooks.plural') },
+             icon: 'icon2 icon-relations'
+    end
 
     config.before_configuration do |app|
       # This is required for the routes to be loaded first as the routes should
@@ -31,13 +37,7 @@ module OpenProject::Webhooks
     end
 
     initializer 'webhooks.subscribe_to_notifications' do
-      OpenProject::Notifications.subscribe(OpenProject::Events::AGGREGATED_WORK_PACKAGE_JOURNAL_READY) do |payload|
-        Webhooks::OutgoingWebhook.joins(:events).where("events.name" => "WorkPackage").each do |webhook|
-          action = payload[:initial] ? "created" : "updated"
-
-          Delayed::Job.enqueue WorkPackageWebhookJob.new(webhook.id, payload[:journal_id], action)
-        end
-      end
+      ::OpenProject::Webhooks::EventResources.subscribe!
     end
 
     initializer 'webhooks.precompile_assets' do |app|

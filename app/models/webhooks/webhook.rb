@@ -13,18 +13,32 @@ module Webhooks
     has_many :projects, through: :webhook_projects
     has_many :deliveries, foreign_key: :webhooks_webhook_id, class_name: '::Webhooks::Log', dependent: :delete_all
 
-    after_initialize :set_all_projects
+    def self.enabled
+      where(enabled: true)
+    end
 
-    def set_all_projects
-      self.all_projects = true if new_record?
+    def self.with_event_name(event_name)
+      enabled
+        .joins(:events)
+        .where("#{::Webhooks::Event.table_name}.name" => event_name)
+    end
+
+    def self.new_default
+      new all_projects: true, enabled: true
     end
 
     def all_projects?
-      all_projects
+      !!all_projects
+    end
+
+    def enabled?
+      !!enabled
     end
 
     def event_names
-      self.events.pluck(:name)
+      self.events
+        .pluck(:name)
+        .map(&:to_sym)
     end
 
     def event_names=(names)

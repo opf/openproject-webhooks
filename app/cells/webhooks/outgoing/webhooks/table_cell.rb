@@ -32,8 +32,8 @@ module ::Webhooks
           [
               ['name', caption: I18n.t('attributes.name')],
               ['enabled', caption: I18n.t(:label_active)],
-              ['selected_projects', caption: Webhooks::Webhook.human_attribute_name('projects')],
-              ['events', caption: Webhooks::Webhook.human_attribute_name('events')],
+              ['selected_projects', caption: ::Webhooks::Webhook.human_attribute_name('projects')],
+              ['events', caption: I18n.t('webhooks.outgoing.label_event_resources')],
               ['description', caption: I18n.t('attributes.description')]
           ]
         end

@@ -2,6 +2,7 @@ module Webhooks
   module Outgoing
     class AdminController < ::ApplicationController
       layout 'admin'
+      menu_item :plugin_webhooks
 
       before_action :require_admin
       before_action :find_webhook, only: [:show, :edit, :update, :destroy]
@@ -14,11 +15,11 @@ module Webhooks
       def edit; end
 
       def new
-        @webhook = webhook_class.new
+        @webhook = webhook_class.new_default
       end
 
       def create
-        service = ::Webhooks::Outgoing::UpdateWebhookService.new(webhook_class.new, current_user: current_user)
+        service = ::Webhooks::Outgoing::UpdateWebhookService.new(webhook_class.new_default, current_user: current_user)
         action = service.call(attributes: permitted_webhooks_params)
         if action.success?
           flash[:notice] = I18n.t(:notice_successful_create)
@@ -66,7 +67,7 @@ module Webhooks
       def permitted_webhooks_params
         params
           .require(:webhook)
-          .permit(:name, :status, :description, :url, :secret,
+          .permit(:name, :status, :description, :url, :secret, :enabled,
                   :project_ids, selected_project_ids: [], events: [])
 
       end

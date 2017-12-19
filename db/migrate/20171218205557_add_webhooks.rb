@@ -5,7 +5,7 @@ class AddWebhooks < ActiveRecord::Migration[5.0]
       t.text :url
       t.text :description, null: false
       t.string :secret, null: true
-      t.boolean :enabled, default: true
+      t.boolean :enabled, null: false
       t.boolean :all_projects, null: false
 
       t.timestamps

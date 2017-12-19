@@ -15,9 +15,9 @@ module ::Webhooks
         def headers
           [
               ['id', caption: I18n.t('attributes.id')],
-              ['action', caption: Webhooks::Log.human_attribute_name('projects')],
+              ['action', caption: ::Webhooks::Log.human_attribute_name('projects')],
               ['time', caption: I18n.t('webhooks.outgoing.deliveries.time')],
-              ['response_code', caption: Webhooks::Log.human_attribute_name('response_code')],
+              ['response_code', caption: ::Webhooks::Log.human_attribute_name('response_code')],
           ]
         end
       end

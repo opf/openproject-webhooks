@@ -32,15 +32,16 @@ require 'rest-client'
 class WorkPackageWebhookJob < WebhookJob
   attr_reader :webhook_id
   attr_reader :journal_id
-  attr_reader :action
+  attr_reader :event_name
 
-  def initialize(webhook_id, journal_id, action)
+  def initialize(webhook_id, journal_id, event_name)
     @webhook_id = webhook_id
     @journal_id = journal_id
-    @action = action
+    @event_name = event_name
   end
 
   def perform
+    binding.pry
     body = request_body
     headers = {
       content_type: :json,
@@ -57,13 +58,12 @@ class WorkPackageWebhookJob < WebhookJob
 
     raise e
   ensure
-    Webhooks::Log.create(
+    ::Webhooks::Log.create(
       webhook: webhook,
-      event: webhook.events.where(name: "WorkPackage").first!,
-      action: action,
+      action: event_name,
       url: webhook.url,
-      response_code: response.code,
-      response_body: response.to_s
+      response_code: response.try(:code),
+      response_body: response.try(:to_s)
     )
   end
 
@@ -74,7 +74,7 @@ class WorkPackageWebhookJob < WebhookJob
   end
 
   def request_body
-    '{"action":"' + action + '","work_package":' + work_package_json + '}'
+    '{"action":"' + event_name + '","work_package":' + work_package_json + '}'
   end
 
   def work_package_json
@@ -92,6 +92,6 @@ class WorkPackageWebhookJob < WebhookJob
   end
 
   def webhook
-    @webook ||= Webhooks::Webhook.find(webhook_id)
+    @webhook ||= Webhooks::Webhook.find(webhook_id)
   end
 end
