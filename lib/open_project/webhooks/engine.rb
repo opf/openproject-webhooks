@@ -29,5 +29,15 @@ module OpenProject::Webhooks
       # be prepended so they take precedence over the core.
       app.config.paths['config/routes.rb'].unshift File.join(File.dirname(__FILE__), "..", "..", "..", "config", "routes.rb")
     end
+
+    initializer 'webhooks.subscribe_to_notifications' do
+      OpenProject::Notifications.subscribe(OpenProject::Events::AGGREGATED_WORK_PACKAGE_JOURNAL_READY) do |payload|
+        Webhooks::OutgoingWebhook.joins(:events).where("events.name" => "WorkPackage").each do |webhook|
+          action = payload[:initial] ? "created" : "updated"
+
+          Delayed::Job.enqueue WorkPackageWebhookJob.new(webhook.id, payload[:journal_id], action)
+        end
+      end
+    end
   end
 end
