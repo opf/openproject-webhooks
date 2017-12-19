@@ -15,6 +15,17 @@ module ::Webhooks
         end
       end
 
+      def events
+        selected_events = model.events
+        count = selected_events.count
+
+        if count <= 3
+          selected_events.pluck(:name).join(', ')
+        else
+          content_tag('span', count, class: 'badge -border-only')
+        end
+      end
+
       def selected_projects
         selected = model.project_ids.count
 

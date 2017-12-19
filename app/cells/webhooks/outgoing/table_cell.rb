@@ -1,7 +1,7 @@
 module ::Webhooks
   module Outgoing
     class TableCell < ::TableCell
-      columns :name, :enabled, :selected_projects, :description
+      columns :name, :enabled, :selected_projects, :events, :description
 
       def initial_sort
         [:id, :asc]
@@ -32,6 +32,7 @@ module ::Webhooks
             ['name', caption: I18n.t('attributes.name')],
             ['enabled', caption: I18n.t(:label_active)],
             ['selected_projects', caption: Webhooks::Webhook.human_attribute_name('projects')],
+            ['events', caption: Webhooks::Webhook.human_attribute_name('events')],
             ['description', caption: I18n.t('attributes.description')]
         ]
       end
