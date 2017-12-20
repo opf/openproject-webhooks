@@ -21,6 +21,23 @@ module OpenProject::Webhooks::EventResources
       ##
       # Return a mapping of event key to its localized name
       def available_events_map
+        Hash[available_actions.map { |symbol| [ prefixed_event_name(symbol), localize_event_name(symbol) ] }]
+      end
+
+      ##
+      # Get the prefix key for this module
+      def prefix_key
+        name.demodulize.underscore
+      end
+
+      ##
+      # Create a prefixed event name
+      def prefixed_event_name(action)
+        "#{prefix_key}:#{action}"
+      end
+
+
+      def available_actions
         raise NotImplementedError
       end
 

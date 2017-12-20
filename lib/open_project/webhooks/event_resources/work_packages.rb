@@ -9,11 +9,8 @@ module OpenProject::Webhooks::EventResources
         ]
       end
 
-      def available_events_map
-        {
-          work_package_created: localize_event_name(:created),
-          work_package_updated: localize_event_name(:updated),
-        }
+      def available_actions
+        %i(updated created)
       end
 
       def resource_name
@@ -24,7 +21,7 @@ module OpenProject::Webhooks::EventResources
 
       def handle_notification(payload, event_name)
         action = payload[:initial] ? "created" : "updated"
-        event_name = "work_package_#{action}"
+        event_name = prefixed_event_name(action)
         active_webhooks.with_event_name(event_name).pluck(:id).each do |id|
           Delayed::Job.enqueue WorkPackageWebhookJob.new(id, payload[:journal_id], event_name)
         end

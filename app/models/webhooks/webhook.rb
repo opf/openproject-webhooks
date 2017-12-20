@@ -38,7 +38,6 @@ module Webhooks
     def event_names
       self.events
         .pluck(:name)
-        .map(&:to_sym)
     end
 
     def event_names=(names)
