@@ -67,7 +67,7 @@ module Webhooks
       def permitted_webhooks_params
         params
           .require(:webhook)
-          .permit(:name, :status, :description, :url, :secret, :enabled,
+          .permit(:name, :description, :url, :secret, :enabled,
                   :project_ids, selected_project_ids: [], events: [])
 
       end
