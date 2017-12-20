@@ -45,7 +45,7 @@ module ::Webhooks
 
           if selected.empty?
             "(#{I18n.t(:label_all)})"
-          elsif selected <= 3
+          elsif selected.size <= 3
             webhook.projects.pluck(:name).join(', ')
           else
             content_tag('span', selected, class: 'badge -border-only')
