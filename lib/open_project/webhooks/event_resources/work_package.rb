@@ -1,7 +1,7 @@
 require_relative 'base'
 
 module OpenProject::Webhooks::EventResources
-  class WorkPackages < Base
+  class WorkPackage < Base
     class << self
       def notification_names
         [
