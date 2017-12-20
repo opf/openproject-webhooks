@@ -9,7 +9,7 @@ module ::Webhooks
         end
 
         def time
-          format_time model.updated_at
+          model.updated_at.to_s # Force ISO8601
         end
 
         def response_body
