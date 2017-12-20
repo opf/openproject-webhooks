@@ -42,17 +42,13 @@ class WorkPackageWebhookJob < WebhookJob
 
   def perform
     body = request_body
-    headers = {
-      content_type: :json,
-      accept: :json
-    }
     exception = nil
 
     if signature = request_signature(body)
       headers['HTTP_X_OP_SIGNATURE'] = signature
     end
 
-    response = RestClient.post webhook.url, request_body, headers
+    response = RestClient.post webhook.url, request_body, request_headers
   rescue RestClient::Exception => e
     response = e.response
 
@@ -66,7 +62,7 @@ class WorkPackageWebhookJob < WebhookJob
       webhook: webhook,
       event_name: event_name,
       url: webhook.url,
-      request_headers: headers,
+      request_headers: request_headers,
       request_body: body,
       response_code: response.try(:code).to_i,
       response_headers: response.try(:headers),
@@ -78,6 +74,13 @@ class WorkPackageWebhookJob < WebhookJob
     if secret = OpenProject::Configuration["webhooks_secret"]
       'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret, request_body)
     end
+  end
+
+  def request_headers
+    {
+      content_type: "application/json",
+      accept: "application/json"
+    }
   end
 
   def request_body

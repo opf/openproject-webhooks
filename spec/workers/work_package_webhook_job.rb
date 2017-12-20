@@ -46,6 +46,10 @@ describe WorkPackageWebhookJob, type: :model, webmock: true do
     let(:event) { "work_package:updated" }
     let(:job) { WorkPackageWebhookJob.new webhook.id, work_package.journals.last.id, event }
 
+    let(:request_headers) do
+      { content_type: "application/json", accept: "application/json" }
+    end
+
     let(:response_code) { 200 }
     let(:response_body) { "hook called" }
     let(:response_headers) do
@@ -61,7 +65,8 @@ describe WorkPackageWebhookJob, type: :model, webmock: true do
               "_type" => "WorkPackage",
               "subject" => title
             )
-          )
+          ),
+          headers: request_headers
         )
         .to_return(
           status: response_code,
@@ -84,6 +89,8 @@ describe WorkPackageWebhookJob, type: :model, webmock: true do
 
       expect(log.webhook).to eq webhook
       expect(log.url).to eq webhook.url
+      expect(log.event_name).to eq event
+      expect(log.request_headers).to eq request_headers
       expect(log.response_code).to eq response_code
       expect(log.response_body).to eq response_body
       expect(log.response_headers).to eq response_headers
