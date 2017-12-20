@@ -41,7 +41,7 @@ module ::Webhooks
         end
 
         def selected_projects
-          selected = webhook.project_ids.count
+          selected = webhook.project_names
 
           if selected.zero?
           "(#{I18n.t(:label_all)})"

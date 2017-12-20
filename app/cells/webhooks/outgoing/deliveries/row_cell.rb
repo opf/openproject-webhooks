@@ -11,6 +11,10 @@ module ::Webhooks
         def time
           format_time model.updated_at
         end
+
+        def response_body
+          render locals: { log_entry: log }, prefixes: ["#{::OpenProject::Webhooks::Engine.root}/app/cells/views"]
+        end
       end
     end
   end

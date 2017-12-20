@@ -10,6 +10,7 @@ en:
         event_name: 'Event name'
         url: 'Payload URL'
         response_code: 'Response code'
+        response_body: 'Response'
     models:
       webhooks/outgoing_webhook: "Outgoing webhook"
   webhooks:

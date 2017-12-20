@@ -36,8 +36,7 @@ module Webhooks
     end
 
     def event_names
-      self.events
-        .pluck(:name)
+      events.pluck(:name)
     end
 
     def event_names=(names)
