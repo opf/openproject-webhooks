@@ -7,7 +7,7 @@ en:
         events: 'Events'
         projects: 'Enabled projects'
       webhooks/log:
-        action: 'Action'
+        event_name: 'Event name'
         url: 'Payload URL'
         response_code: 'Response code'
     models:
