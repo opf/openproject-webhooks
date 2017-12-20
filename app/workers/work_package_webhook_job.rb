@@ -71,7 +71,7 @@ class WorkPackageWebhookJob < WebhookJob
   end
 
   def request_signature(request_body)
-    if secret = OpenProject::Configuration["webhooks_secret"]
+    if secret = webhook.secret.presence
       'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), secret, request_body)
     end
   end
