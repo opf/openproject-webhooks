@@ -41,10 +41,10 @@ module ::Webhooks
         end
 
         def selected_projects
-          selected = webhook.project_names
+          selected = webhook.projects.map(&:name)
 
-          if selected.zero?
-          "(#{I18n.t(:label_all)})"
+          if selected.empty?
+            "(#{I18n.t(:label_all)})"
           elsif selected <= 3
             webhook.projects.pluck(:name).join(', ')
           else
