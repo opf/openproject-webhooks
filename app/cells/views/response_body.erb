@@ -1,9 +1,8 @@
 <modal-wrapper>
-  <%= link_to('',
-              title: log_entry.class.human_attribute_name('response_body'),
-              class: 'modal-wrapper--activation-link') do
-    op_icon('icon-info1')
-  end %>
+  <a class="modal-wrapper--activation-link" title="<%= log_entry.class.human_attribute_name('response_body') %>">
+    <%= op_icon('icon-info1') %>
+    <%= t(:button_show) %>
+  </a>
   <div style="display: none" class="modal-wrapper--content  ngdialog-theme-openproject">
     <div class="webhooks--response-body-modal">
         <div class="modal--header">
