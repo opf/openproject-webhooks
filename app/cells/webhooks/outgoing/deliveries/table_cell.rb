@@ -2,7 +2,7 @@ module ::Webhooks
   module Outgoing
     module Deliveries
       class TableCell < ::TableCell
-        columns :id, :action, :time, :response_code
+        columns :id, :event_name, :time, :response_code, :response_body
 
         def sortable?
           false
@@ -15,9 +15,10 @@ module ::Webhooks
         def headers
           [
               ['id', caption: I18n.t('attributes.id')],
-              ['action', caption: ::Webhooks::Log.human_attribute_name('projects')],
+              ['event_name', caption: ::Webhooks::Log.human_attribute_name('projects')],
               ['time', caption: I18n.t('webhooks.outgoing.deliveries.time')],
               ['response_code', caption: ::Webhooks::Log.human_attribute_name('response_code')],
+              ['response_body', caption: ::Webhooks::Log.human_attribute_name('response_body')],
           ]
         end
       end
