@@ -10,10 +10,10 @@
         </div>
         <div class="ngdialog-body modal--main -inner-scroll">
           <h2>Headers</h2>
-          <pre><%- log_entry.response_headers.each do |k,v| -%><strong><%= k -%></strong>:  <span><%= v -%></span><br/><%- end -%></pre>
+          <pre class="webhooks--response-headers" ><%- log_entry.response_headers.each do |k,v| -%><strong><%= k -%></strong>:  <span><%= v -%></span><br/><%- end -%></pre>
           <hr/>
           <h2>Response body</h2>
-          <pre>
+          <pre class="webhooks--response-body">
             <%= log_entry.response_body %>
           </pre>
         </div>

@@ -53,7 +53,10 @@ module ::Webhooks
         end
 
         def row_css_class
-          'webhooks--outgoing-webhook-row'.freeze
+          [
+            'webhooks--outgoing-webhook-row',
+            "webhooks--outgoing-webhook-row-#{model.id}"
+          ].join(' ')
         end
 
         ###
