@@ -30,21 +30,20 @@
 require 'spec_helper'
 
 describe WorkPackageWebhookJob, type: :model, webmock: true do
-  let(:title) { "Some workpackage subject" }
-  let(:work_package) { FactoryGirl.create :work_package, subject: title }
+  shared_examples "a work package webhook call" do |*flags|
+    let(:title) { "Some workpackage subject" }
+    let(:work_package) { FactoryGirl.create :work_package, subject: title }
 
-  let(:secret) { nil }
-  let(:webhook) { FactoryGirl.create :webhook, url: "http://example.net/test/42", secret: secret }
+    let(:secret) { nil }
+    let(:webhook) { FactoryGirl.create :webhook, url: request_url, secret: secret }
 
-  let(:user) { FactoryGirl.create :admin }
+    let(:user) { FactoryGirl.create :admin }
 
-  before do
-    User.current = user
-  end
-
-  describe "triggering a work package update" do
-    let(:event) { "work_package:updated" }
+    let(:event) { "work_package:created" }
     let(:job) { WorkPackageWebhookJob.new webhook.id, work_package.journals.last.id, event }
+
+    let(:request_url) { "http://example.net/test/42" }
+    let(:stubbed_url) { request_url }
 
     let(:request_headers) do
       { content_type: "application/json", accept: "application/json" }
@@ -57,7 +56,7 @@ describe WorkPackageWebhookJob, type: :model, webmock: true do
     end
 
     let(:stub) do
-      stub_request(:post, "example.net/test/42")
+      stub_request(:post, stubbed_url.sub("http://", ""))
         .with(
           body: hash_including(
             "action" => event,
@@ -76,8 +75,15 @@ describe WorkPackageWebhookJob, type: :model, webmock: true do
     end
 
     before do
+      User.current = user
+
       stub
-      job.perform
+
+      begin
+        job.perform
+      rescue
+        # ignoring it as it's expected to throw exceptions in certain scenarios
+      end
     end
 
     it "calls the webhook url" do
@@ -94,6 +100,26 @@ describe WorkPackageWebhookJob, type: :model, webmock: true do
       expect(log.response_code).to eq response_code
       expect(log.response_body).to eq response_body
       expect(log.response_headers).to eq response_headers
+    end
+  end
+
+  describe "triggering a work package update" do
+    it_behaves_like "a work package webhook call" do
+      let(:event) { "work_package:updated" }
+    end
+  end
+
+  describe "triggering a work package creation" do
+    it_behaves_like "a work package webhook call" do
+      let(:event) { "work_package:created" }
+    end
+  end
+
+  describe "triggering a work package update with an invalid url" do
+    it_behaves_like "a work package webhook call" do
+      let(:event) { "work_package:updated" }
+      let(:response_code) { 404 }
+      let(:response_body) { "not found" }
     end
   end
 end
