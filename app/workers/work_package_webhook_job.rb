@@ -41,12 +41,12 @@ class WorkPackageWebhookJob < WebhookJob
   end
 
   def perform
-    binding.pry
     body = request_body
     headers = {
       content_type: :json,
       accept: :json
     }
+    exception = nil
 
     if signature = request_signature(body)
       headers['HTTP_X_OP_SIGNATURE'] = signature
@@ -57,13 +57,20 @@ class WorkPackageWebhookJob < WebhookJob
     response = e.response
 
     raise e
+  rescue => e
+    exception = e
+
+    raise e
   ensure
     ::Webhooks::Log.create(
       webhook: webhook,
-      action: event_name,
+      event_name: event_name,
       url: webhook.url,
-      response_code: response.try(:code),
-      response_body: response.try(:to_s)
+      request_headers: headers,
+      request_body: body,
+      response_code: response.try(:code).to_i,
+      response_headers: response.try(:headers),
+      response_body: response.try(:to_s) || exception.try(:message)
     )
   end
 
