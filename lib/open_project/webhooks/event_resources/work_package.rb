@@ -23,7 +23,8 @@ module OpenProject::Webhooks::EventResources
         action = payload[:initial] ? "created" : "updated"
         event_name = prefixed_event_name(action)
         active_webhooks.with_event_name(event_name).pluck(:id).each do |id|
-          Delayed::Job.enqueue WorkPackageWebhookJob.new(id, payload[:journal_id], event_name)
+          Delayed::Job.enqueue WorkPackageWebhookJob.new(id, payload[:journal_id], event_name),
+                               priority: ::ApplicationJob.priority_number(:low)
         end
       end
     end

@@ -40,6 +40,10 @@ class WorkPackageWebhookJob < WebhookJob
     @event_name = event_name
   end
 
+  def max_attempts
+    2
+  end
+
   def perform
     body = request_body
     exception = nil
